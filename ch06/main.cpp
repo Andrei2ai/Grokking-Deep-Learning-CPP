@@ -65,24 +65,26 @@ static void backpropagation_in_code()
 
 	const nc::NdArray<double> walk_vs_stop = nc::NdArray<double>({1, 1, 0, 0}).transpose();
 
-	/*nc::random::seed(0);
+	nc::random::seed(1);
+	static std::mt19937 generator;
+	generator.seed(1);
 
 	auto weights_0_1 = 2. * nc::random::rand<double>(nc::Shape(3, hidden_size)) - 1.;
 	auto weights_1_2 = 2. * nc::random::rand<double>(nc::Shape(hidden_size, 1)) - 1.;
 
 	PRINT(weights_0_1);
-	PRINT(weights_1_2);*/
+	PRINT(weights_1_2);
 
 	// Random from python np.random.seed(1)
-	nc::NdArray<double> weights_0_1  {
-		{-0.16595599,  0.44064899, -0.99977125, -0.39533485},
-		{-0.70648822, -0.81532281, -0.62747958, -0.30887855},
-		{-0.20646505,  0.07763347, -0.16161097,  0.370439  }
-	};
+//	nc::NdArray<double> weights_0_1  {
+//		{-0.16595599,  0.44064899, -0.99977125, -0.39533485},
+//		{-0.70648822, -0.81532281, -0.62747958, -0.30887855},
+//		{-0.20646505,  0.07763347, -0.16161097,  0.370439  }
+//	};
 
 	// Random from python np.random.seed(1)
-	nc::NdArray<double> weights_1_2 {-0.5910955 , 0.75623487, -0.94522481, 0.34093502};
-	weights_1_2 = weights_1_2.transpose();
+//	nc::NdArray<double> weights_1_2 {-0.5910955 , 0.75623487, -0.94522481, 0.34093502};
+//	weights_1_2 = weights_1_2.transpose();
 
 	for( int iteration = 0; iteration < 60; ++iteration)
 	{
