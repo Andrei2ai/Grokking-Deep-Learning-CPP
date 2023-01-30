@@ -67,49 +67,37 @@ std::vector<uint8_t> readLabel(std::ifstream &f)
 	return v;
 }
 
+std::ifstream openFile(const std::string &fileName)
+{
+	std::ifstream f(fileName, std::ios::binary);
+	if (f.is_open() == false)
+	{
+		throw std::runtime_error(fileName + " cannot open");
+	}
+	return f;
+}
+
 std::vector<imgArray> readTrainImg()
 {
-	std::vector<imgArray> x_train {};
-	std::ifstream x("train-images.idx3-ubyte", std::ios::binary);
-	if (x.is_open())
-	{
-		x_train = readImg(x);
-	}
-	return x_train;
+	std::ifstream x = openFile("train-images.idx3-ubyte");
+	return readImg(x);
 }
 
 std::vector<imgArray> readTestImg()
 {
-	std::vector<imgArray> x_test {};
-	std::ifstream x("t10k-images.idx3-ubyte", std::ios::binary);
-	if (x.is_open())
-	{
-		x_test = readImg(x);
-	}
-
-	return x_test;
+	std::ifstream x  = openFile("t10k-images.idx3-ubyte");
+	return readImg(x);
 }
 
 std::vector<uint8_t> readTrainLabel()
 {
-	std::vector<uint8_t> y_train {};
-	std::ifstream y("train-labels.idx1-ubyte", std::ios::binary);
-	if (y.is_open())
-	{
-		y_train = readLabel(y);
-	}
-
-	return y_train;
+	std::ifstream y = openFile("train-labels.idx1-ubyte");
+	return readLabel(y);
 }
 
 std::vector<uint8_t> readTestLabel()
 {
-	std::vector<uint8_t> y_test {};
-	std::ifstream y("t10k-labels.idx1-ubyte", std::ios::binary);
-	if (y.is_open())
-	{
-		y_test = readLabel(y);
-	}
-
-	return y_test;
+	std::ifstream y = openFile("t10k-labels.idx1-ubyte");
+	return readLabel(y);
 }
+

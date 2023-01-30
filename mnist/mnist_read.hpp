@@ -21,6 +21,8 @@ std::vector<imgArray> readImg(std::ifstream &f);
 
 std::vector<uint8_t> readLabel(std::ifstream &f);
 
+std::ifstream openFile(const std::string& fileName);
+
 std::vector<imgArray> readTrainImg();
 
 std::vector<imgArray> readTestImg();

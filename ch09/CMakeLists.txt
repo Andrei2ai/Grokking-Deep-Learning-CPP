@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 
-project(ch08 LANGUAGES CXX)
+project(ch09 LANGUAGES CXX)
 
 set(SRC ${SRC} main.cpp main.hpp)
 set(SRC ${SRC} ../mnist/mnist_read.cpp ../mnist/mnist_read.hpp)
