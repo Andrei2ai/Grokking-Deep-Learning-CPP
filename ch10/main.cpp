@@ -38,7 +38,7 @@ static void upgrading_our_MNIST_network(
 	auto weights_1_2 = 0.2 * nc::random::rand<double>(nc::Shape(hidden_size,num_labels)) - 0.1;
 
 	auto get_image_section = [](nc::NdArray<double>& layer, int row_from, int row_to, int col_from, int col_to) {
-		for(int i = 0; i < layer.shape().rows)
+		for(int i = 0; i < layer.shape().rows; ++i)
 		{
 			auto tmpImg = layer(i, layer.cSlice()).reshape(28, 28);
 			auto tmp = tmpImg(nc::Slice(row_from, row_to), nc::Slice(col_from, col_to));
@@ -65,30 +65,13 @@ static void upgrading_our_MNIST_network(
 			std::vector<nc::NdArray<double>> sects;
 			for(int row_start  = 0; row_start < (input_rows - kernel_rows); ++row_start )
 			{
-				for(int col_start   = 0; col_start  < (input_cols - kernel_cols); ++col_start  )
+				for(int col_start = 0; col_start  < (input_cols - kernel_cols); ++col_start  )
 				{
 					auto sect = get_image_section(layer_0, row_start, row_start+kernel_rows, col_start, col_start+kernel_cols);
 				}
 			}
 
-			auto layer_1 = nc::tanh(nc::dot(layer_0, weights_0_1));
-			auto dropout_mask = nc::random::randInt<int>(layer_1.shape(), 2).astype<double>();
-			layer_1 *= dropout_mask * 2.0;
-			auto layer_2 = nc::special::softmax(nc::dot(layer_1, weights_1_2), nc::Axis::COL);
 
-			for( int k = 0; k < batch_size; ++k)
-			{
-				correct_cnt += static_cast<int>((layer_2(k, layer_2.cSlice()).argmax().item() ==
-				                                 labels(batch_start + k , labels.cSlice()).argmax().item()));
-			}
-
-			auto layer_2_delta = (labels(nc::Slice(batch_start, batch_end), labels.cSlice()) - layer_2) /
-			        static_cast<double>(batch_size * layer_2.shape().rows);
-			auto layer_1_delta = layer_2_delta.dot(weights_1_2.transpose()) * tanh2deriv(layer_1);
-			layer_1_delta *= dropout_mask;
-
-			weights_1_2 += alpha * layer_1.transpose().dot(layer_2_delta);
-			weights_0_1 += alpha * layer_0.transpose().dot(layer_1_delta);
 		}
 
 		int test_correct_cnt = 0;
